@@ -33,8 +33,8 @@ def tasks_detail(request, task_pk):
     # recuperar la tarea
     try:
         task = Task.objects.get(pk=task_pk)
-    except Task.DoesNotExit:
-        return HttpResponseNotFound("La tarea que buscas no existe.")
+    except Task.DoesNotExist:
+        return render(request, '404.html', {}, status=404)
     except Task.MultipleObjectsReturned:
         return HttpResponse("Existen varias tareas con ese identificador", status=300)
 
