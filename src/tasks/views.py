@@ -1,10 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.http import HttpResponseNotFound
 from django.shortcuts import render
 
 from tasks.models import Task
 
 
+@login_required()
 def tasks_list(request):
     """
     Recupera todas las tareas de la BD y las pinta
@@ -31,6 +32,7 @@ def tasks_list(request):
     return render(request, 'tasks/list.html', context)
 
 
+@login_required()
 def tasks_detail(request, task_pk):
     """
     Recuperamos una tarea de BD y la pintamos con una plantilla
@@ -53,3 +55,12 @@ def tasks_detail(request, task_pk):
 
     # renderizar plantilla
     return render(request, 'tasks/detail.html', context)
+
+
+def login(request):
+    """
+    Hace login de un usuario
+    :param request:  HttpRequest
+    :return: HttpResponse
+    """
+    return render(request, 'login.html')
