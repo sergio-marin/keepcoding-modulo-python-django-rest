@@ -1,15 +1,15 @@
 from django.contrib.auth.models import User
 from rest_framework import status
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from users.serializers import UserSerializer, UsersListSerializer
 
 
-class UsersAPI(APIView):
+class UsersAPI(GenericAPIView):
     """
-        Lists (GET) and creates (POST) users
+    Lists (GET) and creates (POST) users
     """
 
     def get(self, request):
@@ -19,8 +19,9 @@ class UsersAPI(APIView):
         :return: Response
         """
         users = User.objects.all().values("id", "username")
-        serializer = UsersListSerializer(users, many=True)
-        return Response(serializer.data)
+        page = self.paginate_queryset(users)
+        serializer = UsersListSerializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
     def post(self, request):
         """
@@ -41,7 +42,7 @@ class UserDetailAPI(APIView):
     User detail (GET), update user (PUT), delete user (DELETE)
     """
 
-    def get(self, request):
+    def get(self, request, pk):
         """
         Returns a requested user
         :param request: HttpRequest
@@ -66,7 +67,6 @@ class UserDetailAPI(APIView):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
     def delete(self, request, pk):
         """
