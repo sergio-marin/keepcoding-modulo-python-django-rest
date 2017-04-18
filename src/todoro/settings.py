@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'ui',
     'tasks',
     'users',
-    'rest_framework'
+    'rest_framework',
+    'files'
 ]
 
 MIDDLEWARE = [
@@ -161,3 +162,8 @@ REST_FRAMEWORK = {
         'rest_framework_yaml.renderers.YAMLRenderer'
     )
 }
+
+
+# MEDIA ROOT
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
