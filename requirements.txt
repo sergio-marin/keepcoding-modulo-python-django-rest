@@ -1,3 +1,5 @@
 Django==1.10.5
+django-filter==1.0.2
 djangorestframework==3.6.2
+view==0.0.1
 wheel==0.24.0
